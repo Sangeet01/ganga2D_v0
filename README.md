@@ -20,7 +20,7 @@ ganga3D_v0 generates 3D molecular structures (SDF files) of pharmaceutical compo
 
 **Goal**: Provide a quick 3D structure estimate for known compounds or new natural products, leveraging fragment similarity. Ideal as a starting point for further validation (e.g., NMR).
 
-Tested on few compounds like Aspirin, Pacitaxel due to lack of data. 
+Tested on few compounds like Aspirin, Ibuprofen and Pacitaxel due to lack of data. 
 
 ## Installation
 1. **Set Up Python**:  

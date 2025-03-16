@@ -81,3 +81,6 @@ Licensed under the MIT License—see `LICENSE` file.
 ## Contributing
 Fork, improve (e.g., enhance FTIR refinement, add de novo prediction), and submit pull requests!
 
+PS: Ganga is my mother's name and I wanna honour my first work in her name.
+
+PPS: Sangeet here, an undergrad chemist turned code conjurer—may my scripts run smoother than my titration skills!

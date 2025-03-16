@@ -83,4 +83,4 @@ Fork, improve (e.g., enhance FTIR refinement, add de novo prediction), and submi
 
 PS: Ganga is my mother's name and I wanna honour my first work in her name.
 
-PPS: Sangeet here, an undergrad chemist turned code conjurer—may my scripts run smoother than my titration skills!
+PPS: Sangeet’s the name, a daft undergrad splashing through chemistry and code like a toddler—my titrations are a mess, and I’ve used my mouth to pipette. 

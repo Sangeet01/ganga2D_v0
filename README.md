@@ -1,6 +1,6 @@
-# ganga3D
+# ganga3D_v0
 
-# ganga3D: 3D Structure Prediction from MS and FTIR Data
+# ganga3D_v0: 3D Structure Prediction from MS and FTIR Data
 
 ganga3D_v0 generates 3D molecular structures (SDF files) of pharmaceutical compounds—from simple drugs like aspirin to complex natural products like paclitaxel—using mass spectrometry (MS) and optional Fourier-transform infrared spectroscopy (FTIR) data. It matches MS fragments against a library to predict a 2D structure (SMILES), then refines the 3D conformation with FTIR when provided, offering a rough but useful 3D arrangement.
 

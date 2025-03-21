@@ -1,24 +1,24 @@
 # ganga3D_v0
 
-# ganga3D_v0: 3D Structure Prediction from MS and FTIR Data
+# ganga3D_v0: 3D Structure Prediction from MS and NMR Data
 
-ganga3D_v0 generates 3D molecular structures (SDF files) of pharmaceutical compounds—from simple drugs like aspirin to complex natural products like paclitaxel—using mass spectrometry (MS) and optional Fourier-transform infrared spectroscopy (FTIR) data. It matches MS fragments against a library to predict a 2D structure (SMILES), then refines the 3D conformation with FTIR when provided, offering a rough but useful 3D arrangement.
+ganga3D_v0 generates 3D molecular structures (SDF files) of pharmaceutical compounds—from simple drugs like aspirin to complex natural products like paclitaxel—using mass spectrometry (MS) and optional Nuclear Magnetic Resonance(NMR) data. It matches MS fragments against a library to predict a 2D structure (SMILES), then refines the 3D conformation with NMR when provided, offering a rough but useful 3D arrangement.
 
 
 ## Pipeline Explanation
 1. **Input**:  
-   - MS data (CSV: m/z, intensity).  
-   - Optional FTIR data (CSV: wavenumbers).  
+   - MS data (CSV: m/z, intensity or image).  
+   - Optional NMR data (CSV: wavenumbers, image).  
 2. **Spectral Matching**:  
    - MS data is matched to a library (e.g., NIST, MassBank) using CosineGreedy (tolerance: 1.0 Da).  
    - Retrieves the SMILES string of the best match based on fragment similarity.  
 3. **3D Generation**:  
    - Converts SMILES to a 3D molecule with RDKit.  
-   - If FTIR is provided, refines conformers using a Random Forest model and IR peak rules.  
+   - If NMR is provided, refines conformers using a Random Forest model and peak rules.  
 4. **Output**:  
    - SDF file with a rough 3D structure if a match is found, or an error if no match exists.
 
-**Goal**: Provide a quick 3D structure estimate for known compounds or new natural products, leveraging fragment similarity. Ideal as a starting point for further validation (e.g., NMR).
+**Goal**: Provide a quick 3D structure estimate for known compounds or new natural products, leveraging fragment similarity. Ideal as a starting point for further validation.
 
 Tested on few compounds like Aspirin, Ibuprofen and Penicillin only due to lack of data. 
 
@@ -47,7 +47,7 @@ Tested on few compounds like Aspirin, Ibuprofen and Penicillin only due to lack 
 ## Usage
 1. **Prepare Input Files**:  
    - MS data: CSV with two columns, no header (e.g., `m/z,Intensity`).  
-   - FTIR data (optional): CSV with one column, no header (e.g., `Wavenumber`).  
+   - NMR data (optional): CSV with one column, no header (e.g., `Wavenumber`).  
 2. **Run the Tool**:  
    ```bash
    python ganga3D.py
@@ -60,14 +60,14 @@ Tested on few compounds like Aspirin, Ibuprofen and Penicillin only due to lack 
 ## Example
 ```bash
 Enter MS data CSV file path: C:/Users/is/Desktop/aspirin_mass.csv
-Enter IR data CSV file path: C:/Users/is/Desktop/aspirin_ftir.csv
+Enter NMR data CSV file path: C:/Users/is/Desktop/aspirin_nmr.csv
 Enter output directory: F:/paris
 ```
 - Output: `Generated 'F:/paris/aspirin_mass.sdf'`
 
 ## Limitations
 - **Library Dependency**: Only works for compounds with similar fragments in the library. Errors if no match (score < 0.5).  
-- **Conformational Accuracy**: FTIR refinement is basic—3D structures are approximate, not exact.  
+- **Conformational Accuracy**: R refinement is basic—3D structures are approximate, not exact.  
 - **No De Novo Prediction**: Relies on library matches, not full structure prediction from scratch.
 
 ## Why Use ganga3D_v0?

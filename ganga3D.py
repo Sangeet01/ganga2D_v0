@@ -49,18 +49,18 @@ def process_file(file_path, is_ms=False):
 
 def generate_fallback_smiles(mz, intensities):
     """Generate a fallback SMILES based on MS data."""
-    max_mz = mz[np.argmax(intensities)]  # Highest intensity peak
-    carbon_count = int(max_mz / 14)  # Rough estimate: CH2 = 14 Da
+    max_mz = mz[np.argmax(intensities)]
+    carbon_count = int(max_mz / 14)
     if carbon_count < 1:
         carbon_count = 1
-    smiles = "C" * carbon_count  # Simple alkane chain
+    smiles = "C" * carbon_count
     mol = Chem.MolFromSmiles(smiles)
     if mol:
         mol = Chem.AddHs(mol)
         AllChem.EmbedMolecule(mol, randomSeed=42)
         AllChem.MMFFOptimizeMolecule(mol)
         return Chem.MolToSmiles(mol)
-    return "C"  # Fallback to methane if all else fails
+    return "C"
 
 def ms_to_smiles(ms_file, library_mgf="C:/Users/is/Desktop/work/pubchem_subset.mgf"):
     """Convert MS data (CSV or image) to SMILES."""
@@ -93,7 +93,7 @@ def ms_to_smiles(ms_file, library_mgf="C:/Users/is/Desktop/work/pubchem_subset.m
     return smiles
 
 def generate_3d_from_ms_ir(ms_file, ir_file, output_dir):
-    """Generate 3D SDF from MS and optional IR (CSV or image)."""
+    """Generate 3D SDF and save SMILES in a .txt file."""
     if not os.path.exists(ms_file):
         print(f"Error: MS file '{ms_file}' not found.")
         return
@@ -131,10 +131,18 @@ def generate_3d_from_ms_ir(ms_file, ir_file, output_dir):
     os.makedirs(output_dir, exist_ok=True)
     base_name = os.path.splitext(os.path.basename(ms_file))[0]
     sdf_file = os.path.join(output_dir, f"{base_name}.sdf")
+    txt_file = os.path.join(output_dir, f"{base_name}_smiles.txt")
+    
+    # Save SDF
     writer = Chem.SDWriter(sdf_file)
     writer.write(mol, confId=int(best_conf_id))
     writer.close()
-    print(f"Generated '{sdf_file}'")
+    
+    # Save SMILES to .txt
+    with open(txt_file, 'w') as f:
+        f.write(smiles)
+    
+    print(f"Generated '{sdf_file}' and saved SMILES to '{txt_file}'")
 
 # User inputs
 ms_file = input("Enter MS data file path (CSV or image, e.g., C:/Users/is/taxol_ms.csv): ")

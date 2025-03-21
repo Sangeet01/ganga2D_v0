@@ -1,4 +1,23 @@
-pandas
-numpy
-rdkit
-matchms
+# requirements
+
+# Core numerical and data handling libraries
+numpy>=1.19.0
+pandas>=1.1.0
+
+# Image processing for spectrum extraction
+opencv-python>=4.5.0
+
+# Signal processing for peak detection
+scipy>=1.5.0
+
+# Chemical structure handling and SMILES generation
+rdkit>=2020.09.1
+
+# HTTP requests for potential API integration
+requests>=2.25.0
+
+# Machine learning for scoring and classification
+scikit-learn>=0.24.0
+
+# Optional: Ensure Python 3.6+ is used
+python>=3.6

@@ -36,26 +36,25 @@ Usage
 
       Example
        For a spectrum of allicin (MW 162.27 Da):
-           Input: Image file allicin_spectrum.png.
-           Command: Run the script and provide the file path.
-           Output: Correctly predicts C=CCSS(=O)CC=C with high scores.
+           -Input: Image file allicin_spectrum.png.
+           -Command: Run the script and provide the file path.
+           -Output: Correctly predicts C=CCSS(=O)CC=C with high scores.
       For a large peptide (MW ~3000 Da):
-            Input: CSV file with m/z 3001 peak.
-            Output: Predicts a peptide SMILES with fragments like [(3001.0, 100.0), (2873.0, 60.0)].
-
+            -Input: CSV file with m/z 3001 peak.
+            -Output: Predicts a peptide SMILES with fragments like [(3001.0, 100.0), (2873.0, 60.0)].
 
 Model Details
-   Size Range: 100 Da to 3000 Da.
-   Databases: Simulated entries from MassBank, NIST, METLIN, mzCloud, GNPS, ChemSpider.
-   Methods:
-      Fragment matching with cosine similarity.
-      De novo prediction for small to large molecules (e.g., peptides, macrolides).
-      Scoring: RMSD (m/z accuracy), TMScore (structural similarity), MS/MS Fit (spectral match), Stereo Score (stereochemistry).
+   -Size Range: 100 Da to 3000 Da.
+   -Databases: Simulated entries from MassBank, NIST, METLIN, mzCloud, GNPS, ChemSpider.
+   -Methods:
+      -Fragment matching with cosine similarity.
+      -De novo prediction for small to large molecules (e.g., peptides, macrolides).
+      -Scoring: RMSD (m/z accuracy), TMScore (structural similarity), MS/MS Fit (spectral match), Stereo Score (stereochemistry).
 
 Limitations
-   Simulated databases; real API integration recommended for production.
-   De novo prediction may oversimplify large molecules (>1500 Da).
-   Fragmentation patterns for large molecules (e.g., peptides) are simplified.
+   -Simulated databases; real API integration recommended for production.
+   -De novo prediction may oversimplify large molecules (>1500 Da).
+   -Fragmentation patterns for large molecules (e.g., peptides) are simplified.
 
 
 Contributing

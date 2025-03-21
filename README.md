@@ -2,76 +2,92 @@
 
 # ganga2D_v0: 2D Structure Prediction
 
-ganga2D_v0 generates 3D molecular structures (SDF files) of pharmaceutical compounds—from simple drugs like aspirin to complex natural products like paclitaxel—using mass spectrometry (MS) and optional Nuclear Magnetic Resonance(NMR) data. It matches MS fragments against a library to predict a 2D structure (SMILES), then refines the 3D conformation with NMR when provided, offering a rough but useful 3D arrangement.
+A Python-based tool for predicting SMILES strings from mass spectrometry data, supporting molecules up to 3000 Da. The model uses spectral databases, fragment matching, and de novo prediction to identify molecular structures.
+
+Features
+Predicts SMILES from mass spectra (CSV or image input).
+Supports small to large molecules (100 Da to 3000 Da).
+Integrates spectral databases: MassBank, NIST, METLIN, mzCloud, GNPS, ChemSpider.
+Performs fragment matching, spectral similarity (cosine), and de novo prediction.
+Outputs performance metrics: RMSD, TMScore, MS/MS Fit, Stereo Score.
 
 
-## Pipeline Explanation
-1. **Input**:  
-   - MS data (CSV: m/z, intensity or image).  
-   - Optional NMR data (CSV: wavenumbers, image).  
-2. **Spectral Matching**:  
-   - MS data is matched to a library (e.g., NIST, MassBank) using CosineGreedy (tolerance: 1.0 Da).  
-   - Retrieves the SMILES string of the best match based on fragment similarity.  
-3. **3D Generation**:  
-   - Converts SMILES to a 3D molecule with RDKit.  
-   - If NMR is provided, refines conformers using a Random Forest model and peak rules.  
-4. **Output**:  
-   - SDF file with a rough 3D structure if a match is found, or an error if no match exists.
+Installation
+1. Clone the Repository:
+    git clone https://github.com/Sangeet01//ganga2D_v0
 
-**Goal**: Provide a quick 3D structure estimate for known compounds or new natural products, leveraging fragment similarity. Ideal as a starting point for further validation.
+2. Install Dependencies: Ensure Python 3.6+ is installed, then run:
+    pip install numpy pandas opencv-python scipy rdkit requests scikit-learn
 
-Tested on few compounds like Aspirin, Ibuprofen and Penicillin only due to lack of data. 
+Usage
+1. Prepare Input:
+   CSV: A file with columns for m/z and intensity (e.g., mass, intensity).
+   Image: A mass spectrum image (e.g., PNG).
 
-## Installation
-1. **Set Up Python**:  
-   - Requires Python 3.12. Download and install from [python.org](https://www.python.org/downloads/release/python-3120/) if needed.  
-2. **Install Dependencies**:  
-   ```bash
-   pip install -r requirements.txt
-   ```
-3. **Download a Spectral Library**:  
-   - **NIST Mass Spectral Library** (recommended, paid):  
-     - Visit [NIST](https://www.nist.gov/srd/nist-standard-reference-database-1a).  
-     - Purchase and download the `.mgf` file (e.g., NIST 23).  
-     - Save to `C:/path/to/nist_library.mgf`.  
-   - **MassBank** (free option):  
-     - Visit [MassBank](https://massbank.eu/MassBank/).  
-     - Download the `.mgf` file from the "Download" section.  
-     - Save to `C:/path/to/massbank.mgf`.  
-   - **GNPS** (free, natural products):  
-     - Visit [GNPS](https://gnps.ucsd.edu/).  
-     - Sign up, download the `.mgf` library from the "Library" section.  
-     - Save to `C:/path/to/gnps_library.mgf`.  
-   - Update the `library_mgf` path in `ganga3D.py` (line 29) to your library’s location.
+2. Run the Script:
+    python ganga2D_v0.py
+    Follow prompts to specify input type (csv or image), file path, and output directory.
 
-## Usage
-1. **Prepare Input Files**:  
-   - MS data: CSV with two columns, no header (e.g., `m/z,Intensity`).  
-   - NMR data (optional): CSV with one column, no header (e.g., `Wavenumber`).  
-2. **Run the Tool**:  
-   ```bash
-   python ganga3D.py
-   ```
-   - Enter paths for MS file, FTIR file (or press Enter to skip), and output directory.  
-3. **Output**:  
-   - Success: An SDF file in the output directory (e.g., `F:/paris/aspirin_mass.sdf`).  
-   - Failure: Error message if no match is found.
+3. Output:
+   Results are saved to result.txt in the specified output directory.
+   Example output:
+   Predicted SMILES for the mass spectrum:
+      C=CCSS(=O)CC=C (DB Score: 0.98, Formula: C6H10OS2, Source: MassBank, Mass Fragments (m/z, intensity): [(73.0, 100.0), (41.0, 50.0)], RMSD: 0.00, TMScore: 1.00, MS/MS Fit: 0.99, Stereo Score: 1.00)
 
-## Example
-```bash
-Enter MS data CSV file path: C:/Users/is/Desktop/aspirin_mass.csv
-Enter NMR data CSV file path: C:/Users/is/Desktop/aspirin_nmr.csv
-Enter output directory: F:/paris
-```
-- Output: `Generated 'F:/paris/aspirin_mass.sdf'`
+      Example
+      For a spectrum of allicin (MW 162.27 Da):
+            Input: Image file allicin_spectrum.png.
+            Command: Run the script and provide the file path.
+            Output: Correctly predicts C=CCSS(=O)CC=C with high scores.
+      For a large peptide (MW ~3000 Da):
+            Input: CSV file with m/z 3001 peak.
+            Output: Predicts a peptide SMILES with fragments like [(3001.0, 100.0), (2873.0, 60.0)].
 
-## Limitations
-- **Library Dependency**: Only works for compounds with similar fragments in the library. Errors if no match (score < 0.5).  
-- **Conformational Accuracy**: R refinement is basic—3D structures are approximate, not exact.  
-- **No De Novo Prediction**: Relies on library matches, not full structure prediction from scratch.
 
-## Why Use ganga3D_v0?
-- Quick 3D structure guesses for pharmaceuticals and natural products from spectral data.  
+Model Details
+   Size Range: 100 Da to 3000 Da.
+   Databases: Simulated entries from MassBank, NIST, METLIN, mzCloud, GNPS, ChemSpider.
+   Methods:
+      Fragment matching with cosine similarity.
+      De novo prediction for small to large molecules (e.g., peptides, macrolides).
+      Scoring: RMSD (m/z accuracy), TMScore (structural similarity), MS/MS Fit (spectral match), Stereo Score (stereochemistry).
+
+Limitations
+   Simulated databases; real API integration recommended for production.
+   De novo prediction may oversimplify large molecules (>1500 Da).
+   Fragmentation patterns for large molecules (e.g., peptides) are simplified.
+
+
+Contributing
+   Contributions are welcome! Please:
+
+Fork the repository.
+   Create a feature branch (git checkout -b feature-name).
+   Commit changes (git commit -m "Add feature").
+   Push to the branch (git push origin feature-name).
+   Open a pull request.
+   
+License
+   This project is licensed under the MIT License. See the  file for details.
+
+
+Contact
+   For issues or questions, open an issue on GitHub or contact: www.linkedin.com/in/sangeet-sangiit01
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Why Use ganga2D_v0?
+- Quick 2D structure guesses for pharmaceuticals and natural products from spectral data.  
 - Useful for initial modeling or hypothesis generation.  
 - Open-source under MIT License.
 

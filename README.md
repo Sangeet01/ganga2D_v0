@@ -35,10 +35,10 @@ Usage
       C=CCSS(=O)CC=C (DB Score: 0.98, Formula: C6H10OS2, Source: MassBank, Mass Fragments (m/z, intensity): [(73.0, 100.0), (41.0, 50.0)], RMSD: 0.00, TMScore: 1.00, MS/MS Fit: 0.99, Stereo Score: 1.00)
 
       Example
-      For a spectrum of allicin (MW 162.27 Da):
-            Input: Image file allicin_spectrum.png.
-            Command: Run the script and provide the file path.
-            Output: Correctly predicts C=CCSS(=O)CC=C with high scores.
+       For a spectrum of allicin (MW 162.27 Da):
+           Input: Image file allicin_spectrum.png.
+           Command: Run the script and provide the file path.
+           Output: Correctly predicts C=CCSS(=O)CC=C with high scores.
       For a large peptide (MW ~3000 Da):
             Input: CSV file with m/z 3001 peak.
             Output: Predicts a peptide SMILES with fragments like [(3001.0, 100.0), (2873.0, 60.0)].

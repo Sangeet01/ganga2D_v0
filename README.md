@@ -1,6 +1,6 @@
 # ganga3D_v0
 
-# ganga3D_v0: 3D Structure Prediction from MS and NMR Data
+# ganga3D_v0: 3D Structure Prediction
 
 ganga3D_v0 generates 3D molecular structures (SDF files) of pharmaceutical compounds—from simple drugs like aspirin to complex natural products like paclitaxel—using mass spectrometry (MS) and optional Nuclear Magnetic Resonance(NMR) data. It matches MS fragments against a library to predict a 2D structure (SMILES), then refines the 3D conformation with NMR when provided, offering a rough but useful 3D arrangement.
 

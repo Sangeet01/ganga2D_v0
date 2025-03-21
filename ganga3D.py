@@ -1,86 +1,99 @@
+
+
 #this is my first work. error might occur. thanks for using it. :)
 
 import sys
-print(f"Python path: {sys.executable}")
 import os
 import pandas as pd
 import numpy as np
+import cv2
+from PIL import Image
+from scipy.signal import find_peaks
 from rdkit import Chem
 from rdkit.Chem import AllChem
 from matchms import Spectrum, calculate_scores
 from matchms.importing import load_from_mgf
 from matchms.similarity import CosineGreedy
 
-# IR rules for conformer feature extraction (unused now, kept for future)
-IR_RULES = {
-    3400: {"group": "[O]-[H]", "dihedral": 180},
-    1720: {"group": "[C]=[O]", "dihedral": 180},
-    1600: {"group": "[C]=[C]", "dihedral": 180},
-    1200: {"group": "[C]-[O]", "dihedral": 120}
-}
+def process_file(file_path, is_ms=False):
+    """Process CSV or image file to extract m/z or IR data."""
+    if not os.path.exists(file_path):
+        return None, None
+    ext = os.path.splitext(file_path)[1].lower()
+    
+    if ext == '.csv':
+        data = pd.read_csv(file_path, header=None)
+        x = pd.to_numeric(data[0], errors='coerce')
+        y = pd.to_numeric(data[1], errors='coerce')
+        valid_mask = ~np.isnan(x) & ~np.isnan(y)
+        if not valid_mask.any():
+            print(f"Error: No valid data in '{file_path}'")
+            return None, None
+        x_clean = x[valid_mask].to_numpy()
+        y_clean = y[valid_mask].to_numpy()
+        if is_ms:
+            sorted_indices = np.argsort(x_clean)
+            return x_clean[sorted_indices].astype(float), y_clean[sorted_indices]
+        return x_clean.astype(float), y_clean
+    
+    else:  # Image file
+        img = Image.open(file_path).convert('L')
+        img_array = np.array(img)
+        denoised = cv2.GaussianBlur(img_array, (5, 5), 0)
+        intensity_profile = np.mean(denoised, axis=0)
+        peaks, _ = find_peaks(intensity_profile, height=np.max(intensity_profile) * 0.1, distance=5)
+        x_values = np.arange(len(intensity_profile), dtype=float)
+        if is_ms:
+            return x_values[peaks], intensity_profile[peaks]
+        return x_values, intensity_profile
+
+def generate_fallback_smiles(mz, intensities):
+    """Generate a fallback SMILES based on MS data."""
+    max_mz = mz[np.argmax(intensities)]  # Highest intensity peak
+    carbon_count = int(max_mz / 14)  # Rough estimate: CH2 = 14 Da
+    if carbon_count < 1:
+        carbon_count = 1
+    smiles = "C" * carbon_count  # Simple alkane chain
+    mol = Chem.MolFromSmiles(smiles)
+    if mol:
+        mol = Chem.AddHs(mol)
+        AllChem.EmbedMolecule(mol, randomSeed=42)
+        AllChem.MMFFOptimizeMolecule(mol)
+        return Chem.MolToSmiles(mol)
+    return "C"  # Fallback to methane if all else fails
 
 def ms_to_smiles(ms_file, library_mgf="C:/Users/is/Desktop/work/pubchem_subset.mgf"):
-    """Convert MS data to a SMILES string by matching against a library."""
-    # Load and clean MS data
-    ms_data = pd.read_csv(ms_file, header=None)
-    mz = pd.to_numeric(ms_data[0], errors='coerce')
-    intensities = pd.to_numeric(ms_data[1], errors='coerce')
-    valid_mask = ~np.isnan(mz) & ~np.isnan(intensities)
-    if not valid_mask.any():
-        print("Error: No valid m/z or intensity data.")
+    """Convert MS data (CSV or image) to SMILES."""
+    mz, intensities = process_file(ms_file, is_ms=True)
+    if mz is None or intensities is None:
+        print("Error: Failed to process MS file.")
         return None
-    mz_clean = mz[valid_mask].to_numpy()
-    intensities_clean = intensities[valid_mask].to_numpy()
-    sorted_indices = np.argsort(mz_clean)
-    mz_sorted = mz_clean[sorted_indices]
-    intensities_sorted = intensities_clean[sorted_indices]
-    print(f"Raw m/z: {mz[:10]}")
-    print(f"Cleaned m/z: {mz_clean[:10]}")
-    print(f"Sorted m/z: {mz_sorted[:10]}")
-    user_spectrum = Spectrum(mz=mz_sorted, intensities=intensities_sorted / intensities_sorted.max())
-    print(f"User spectrum m/z: {user_spectrum.mz[:10]}")
-
-    # Check for library file
-    if not os.path.exists(library_mgf):
-        print(f"Warning: Library MGF not found at '{library_mgf}'. Defaulting to aspirin SMILES.")
-        return "CC(=O)OC1=CC=CC=C1C(=O)O"
-    library_spectra = list(load_from_mgf(library_mgf))
-    print(f"Library spectra loaded: {len(library_spectra)}")
-    if len(library_spectra) < 100:
-        print(f"Warning: Small library ({len(library_spectra)} entries)—results may be limited.")
     
-    # Perform spectral matching
+    user_spectrum = Spectrum(mz=mz, intensities=intensities / intensities.max())
+    if not os.path.exists(library_mgf):
+        print(f"Warning: Library MGF not found at '{library_mgf}'. Generating fallback SMILES.")
+        return generate_fallback_smiles(mz, intensities)
+    
+    library_spectra = list(load_from_mgf(library_mgf))
     cosine = CosineGreedy(tolerance=1.0)
     scores = calculate_scores([user_spectrum], library_spectra, cosine)
     score_pairs = [(i, score[1]['score']) for i, score in enumerate(scores.scores) if score[1] is not None and 'score' in score[1]]
-    print(f"Score values generated: {len(score_pairs)}")
     
-    # Fallback to aspirin if no good match
     if not score_pairs or max(score[1] for _, score in score_pairs) < 0.5:
-        print(f"Warning: No match above 0.5 in '{library_mgf}'. Defaulting to aspirin SMILES.")
-        return "CC(=O)OC1=CC=CC=C1C(=O)O"
+        print("Warning: No match above 0.5. Generating fallback SMILES.")
+        return generate_fallback_smiles(mz, intensities)
     
-    # Get best match
-    best_match_idx, best_score = max(score_pairs, key=lambda x: x[1])
+    best_match_idx, _ = max(score_pairs, key=lambda x: x[1])
     best_match = library_spectra[best_match_idx]
-    print(f"Best match metadata: {best_match.metadata}")
-    print(f"Best match score: {best_score}")
     smiles = best_match.metadata.get("smiles", None) or best_match.metadata.get("computed_smiles", None)
-    
-    # Handle missing SMILES
     if not smiles:
-        name = best_match.metadata.get("compound_name", None)
-        if name and "aspirin" in name.lower():
-            print("Warning: No SMILES in metadata, but compound is aspirin-like.")
-            smiles = "CC(=O)OC1=CC=CC=C1C(=O)O"
-        else:
-            print("Error: No SMILES found in library match.")
-            return None
+        print("Warning: No SMILES in library match. Generating fallback SMILES.")
+        return generate_fallback_smiles(mz, intensities)
     print(f"Predicted SMILES: {smiles}")
     return smiles
 
 def generate_3d_from_ms_ir(ms_file, ir_file, output_dir):
-    """Generate a 3D SDF file from MS and optional IR data."""
+    """Generate 3D SDF from MS and optional IR (CSV or image)."""
     if not os.path.exists(ms_file):
         print(f"Error: MS file '{ms_file}' not found.")
         return
@@ -94,31 +107,26 @@ def generate_3d_from_ms_ir(ms_file, ir_file, output_dir):
         print(f"Error: Invalid SMILES '{smiles}'")
         return
     mol = Chem.AddHs(mol)
-    print(f"Generated molecule with {mol.GetNumAtoms()} atoms from SMILES: {smiles}")
-
+    
     if ir_file and os.path.exists(ir_file):
-        ir_data = pd.read_csv(ir_file, header=None)
-        ir_peaks = ir_data[0].tolist()
-        AllChem.EmbedMultipleConfs(mol, numConfs=50, randomSeed=42)
-        energies = AllChem.MMFFOptimizeMoleculeConfs(mol, maxIters=200)
-        if not energies or mol.GetNumConformers() == 0:
-            print("Error: No conformers generated")
-            return
-        # Filter out failed optimizations (energy = -1)
-        valid_energies = [(i, e[1]) for i, e in enumerate(energies) if e[1] != -1]
-        if not valid_energies:
-            print("Error: All conformers failed optimization")
-            return
-        best_conf_id, best_energy = min(valid_energies, key=lambda x: x[1])
-        print(f"Generated {mol.GetNumConformers()} conformers, selected {best_conf_id} with energy {best_energy}")
+        ir_wavenumbers, _ = process_file(ir_file)
+        if ir_wavenumbers is None:
+            print("Warning: Failed to process IR file, proceeding without it.")
+        else:
+            AllChem.EmbedMultipleConfs(mol, numConfs=50, randomSeed=42)
+            energies = AllChem.MMFFOptimizeMoleculeConfs(mol, maxIters=200)
+            valid_energies = [(i, e[1]) for i, e in enumerate(energies) if e[1] != -1]
+            if not valid_energies:
+                print("Error: All conformers failed optimization")
+                return
+            best_conf_id, _ = min(valid_energies, key=lambda x: x[1])
     else:
         success = AllChem.EmbedMolecule(mol, randomSeed=42)
         if success == -1:
-            print("Error: Single conformer embedding failed")
+            print("Error: Embedding failed")
             return
         AllChem.MMFFOptimizeMolecule(mol, maxIters=200)
         best_conf_id = 0
-        print("Generated single conformer without IR data")
 
     os.makedirs(output_dir, exist_ok=True)
     base_name = os.path.splitext(os.path.basename(ms_file))[0]
@@ -129,8 +137,8 @@ def generate_3d_from_ms_ir(ms_file, ir_file, output_dir):
     print(f"Generated '{sdf_file}'")
 
 # User inputs
-ms_file = input("Enter MS data CSV file path (e.g., C:/Users/is/taxol_ms.csv): ")
-ir_file = input("Enter FTIR data CSV file path (optional, press Enter to skip): ")
+ms_file = input("Enter MS data file path (CSV or image, e.g., C:/Users/is/taxol_ms.csv): ")
+ir_file = input("Enter FTIR data file path (CSV or image, optional, press Enter to skip): ")
 output_dir = input("Enter output directory (e.g., F:/paris): ")
 
 # Execute

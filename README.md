@@ -97,6 +97,7 @@ A paper describing Ganga3D will be uploaded to arXiv. Once available, please cit
 
 Sharma, S. (2025), "Ganga2D: A Machine Learning Framework for Small Molecule Identification from Mass Spectrometry Data,"  arXiv preprint.
 
+---
 ##References
 [1] A. M. Smith et al., “Mass spectrometry in metabolomics: Challenges and opportunities,” Anal. Chem., vol. 90, no. 1, pp. 144–152, 2018.
 

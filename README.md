@@ -3,10 +3,12 @@
 # ganga2D_v0: 2D Structure Prediction
 
 A Python-based tool for predicting SMILES strings from mass spectrometry data, supporting molecules up to 3000 Da. The model uses spectral databases, fragment matching, and de novo prediction to identify molecular structures.
-
+----
 Author:
 ---
   Sangeet Sharma, Nepal
+
+---
 
 Features
 Predicts SMILES from mass spectra (CSV or image input).
@@ -15,6 +17,7 @@ Integrates spectral databases: MassBank, NIST, METLIN, mzCloud, GNPS, ChemSpider
 Performs fragment matching, spectral similarity (cosine), and de novo prediction.
 Outputs performance metrics: RMSD, TMScore, MS/MS Fit, Stereo Score.
 
+----
 
 Installation
 1. Clone the Repository:
@@ -22,6 +25,8 @@ Installation
 
 2. Install Dependencies: Ensure Python 3.6+ is installed, then run:
     pip install numpy pandas opencv-python scipy rdkit requests scikit-learn
+
+---
 
 Usage
 1. Prepare Input:
@@ -61,6 +66,8 @@ Limitations
    -Fragmentation patterns for large molecules (e.g., peptides) are simplified.
 
 
+----
+
 Contributing
    Contributions are welcome! Please:
 
@@ -69,10 +76,14 @@ Fork the repository.
    Commit changes (git commit -m "Add feature").
    Push to the branch (git push origin feature-name).
    Open a pull request.
-   
+ 
+---
+  
 License
    This project is licensed under the MIT License. See the  file for details.
 
+
+----
 
 Contact
    For issues or questions, open an issue on GitHub or contact: www.linkedin.com/in/sangeet-sangiit01

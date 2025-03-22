@@ -345,3 +345,6 @@ if __name__ == "__main__":
     result = run_hybrid_model(mz, intensities, "results")
     for smiles, details in result:
         print(f"Predicted SMILES: {smiles} ({details})")
+
+
+#end

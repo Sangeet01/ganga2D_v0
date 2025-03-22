@@ -131,7 +131,7 @@ Contributions to ganga3D are welcome! Please fork the repository, make your chan
 
 
 
-PS: Ganga is my mother's name and I wanna honour my work in her name.
+PS: Ganga is my mother's name and I wanna honour my first work in her name.
 
 PPS: Sangeet’s the name, a daft undergrad splashing through chemistry and code like a toddler—my titrations are a mess, and I’ve used my mouth to pipette.
 

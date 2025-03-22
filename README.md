@@ -97,6 +97,23 @@ A paper describing Ganga3D will be uploaded to arXiv. Once available, please cit
 
 Sharma, S. (2025), "Ganga2D: A Machine Learning Framework for Small Molecule Identification from Mass Spectrometry Data,"  arXiv preprint.
 
+##References
+[1] A. M. Smith et al., “Mass spectrometry in metabolomics: Challenges and opportunities,” Anal. Chem., vol. 90, no. 1, pp. 144–152, 2018.
+
+[2] H. Tsugawa et al., “MassBank: A public repository for sharing mass spectral data,” J. Mass Spectrom., vol. 46, no. 9, pp. 877–882, 2011.
+
+[3] S. Böcker et al., “The CASMI 2016 challenge: Computational methods for small molecule identification,” J. Cheminform., vol. 9, no. 1, p. 36, 2017.
+
+[4] M. Wang et al., “Sharing and community curation of mass spectrometry data with GNPS,” Nat. Biotechnol., vol. 34, no. 8, pp. 828–837, 2016.
+
+[5] H. Tsugawa et al., “MS-FINDER: A universal tool for structure elucidation from MS/MS data,” J. Cheminform., vol. 8, no. 1, p. 19, 2016.
+
+[6] K. Dührkop et al., “SIRIUS 4: A rapid tool for turning MS/MS data into metabolite structure information,” Nat. Methods, vol. 16, no. 4, pp. 299–302, 2019.
+
+[7] F. Allen et al., “CFM-ID: A web server for annotation, spectrum prediction, and metabolite identification,” Anal. Chem., vol. 86, no. 14, pp. 6921–6929, 2014.
+
+[8] L. Ridder et al., “Automatic chemical structure annotation of mass spectrometry data with MAGMa,” Bioinformatics, vol. 30, no. 11, pp. 1575–1583, 2014.
+
 ## Contributing
 We welcome contributions to `Ganga2D`! To contribute:
 1. Fork the repository.

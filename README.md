@@ -79,9 +79,7 @@ Fork the repository.
  
 ---
   
-License
----
-   Ganga2D is licensed under the Apache License 2.0. See the (LICENSE) file for details.
+
 
 
 ----
@@ -106,8 +104,9 @@ Contact
 - Useful for initial modeling or hypothesis generation.  
 - Open-source under MIT License.
 
-## License
-Licensed under the MIT License—see `LICENSE` file.
+License
+---
+   Ganga2D is licensed under the Apache License 2.0. See the [LICENSE] file for details.
 
 ## Contributing
 Fork, improve (e.g., enhance FTIR refinement, add de novo prediction), and submit pull requests!

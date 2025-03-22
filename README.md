@@ -75,7 +75,7 @@ The `Ganga2D` model has been validated on the following datasets:
 - **Lipidomics**: 208 lipid spectra from MassBank.
 - **Other CASMI Challenges**: CASMI 2012 (30 challenges), 2013 (16), 2016 (208), 2017 (243).
 
-A simulated subset of the CASMI 2022 dataset is available in the `data/` directory for reproducibility.
+The CASMI 2022 dataset is available in the `https://fiehnlab.ucdavis.edu/casmi`.
 
 ## Performance
 `Ganga2D` achieves the following Top-1 accuracies:

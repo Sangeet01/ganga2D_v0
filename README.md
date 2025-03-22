@@ -99,6 +99,7 @@ Sharma, S. (2025), "Ganga2D: A Machine Learning Framework for Small Molecule Ide
 
 ---
 ##References
+---
 [1] A. M. Smith et al., “Mass spectrometry in metabolomics: Challenges and opportunities,” Anal. Chem., vol. 90, no. 1, pp. 144–152, 2018.
 
 [2] H. Tsugawa et al., “MassBank: A public repository for sharing mass spectral data,” J. Mass Spectrom., vol. 46, no. 9, pp. 877–882, 2011.

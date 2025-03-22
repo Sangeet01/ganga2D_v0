@@ -115,5 +115,5 @@ For questions or support, contact www.linkedin.com/in/sangeet-sangiit01.
 PS: Ganga is my mother's name and I wanna honour my work in her name.
 
 PPS: Sangeet’s the name, a daft undergrad splashing through chemistry and code like a toddler—my titrations are a mess, and I’ve used my mouth to pipette.
----
+
 

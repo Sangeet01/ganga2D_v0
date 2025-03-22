@@ -4,6 +4,9 @@
 
 A Python-based tool for predicting SMILES strings from mass spectrometry data, supporting molecules up to 3000 Da. The model uses spectral databases, fragment matching, and de novo prediction to identify molecular structures.
 
+Author
+Sangeet Sharma, Nepal
+
 Features
 Predicts SMILES from mass spectra (CSV or image input).
 Supports small to large molecules (100 Da to 3000 Da).

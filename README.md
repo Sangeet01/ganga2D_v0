@@ -108,7 +108,7 @@ We welcome contributions to `Ganga2D`! To contribute:
 Please ensure your contributions align with the Apache License 2.0.
 
 ## Contact
-For questions or support, contact www.linkedin.com/in/sangeet-sangiit01.
+Contributions to ganga3D are welcome! Please fork the repository, make your changes, and submit a pull request. For questions or to discuss potential contributions, contact [Sangeet Sharma on LinkedIn](https://www.linkedin.com/in/sangeet-sangiit01).
 
 
 

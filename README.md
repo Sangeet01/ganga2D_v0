@@ -86,7 +86,7 @@ This project utilized ChatGPT for code generation and preliminary testing, Gemin
 `Ganga2D` is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
 
 ## Citation
-A paper describing Ganga3D will be uploaded to arXiv. Once available, please cite:
+A paper describing Ganga2D will be uploaded to arXiv. Once available, please cite:
 
 Sharma, S. (2025), "Ganga2D: A Machine Learning Framework for Small Molecule Identification from Mass Spectrometry Data,"  arXiv preprint.
 

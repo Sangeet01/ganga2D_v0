@@ -6,8 +6,7 @@
 
 - Dynamic loss rules and ion mode handling (+ESI/-ESI).
 - Graph-based SMILES assembly for de novo prediction.
-- Achieves 87% Top-1 accuracy on CASMI 2022 (435/500 challenges), 90% on GNPS (900/1,000 spectra), and 88% on lipidomics datasets (183/208 spectra).
-- Outperforms state-of-the-art tools like MS-FINDER (76% on CASMI 2016) and SIRIUS (70%) while being faster (~0.5 s/spectrum).
+
 
 `Ganga2D` is released under the Apache License 2.0, encouraging collaboration and adoption in metabolomics, lipidomics, and natural products research.
 

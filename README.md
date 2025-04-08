@@ -77,14 +77,7 @@ The `Ganga2D` model has been validated on the following datasets:
 
 The CASMI 2022 dataset is available in the `https://fiehnlab.ucdavis.edu/casmi`.
 
-## Performance
-`Ganga2D` achieves the following Top-1 accuracies:
-- CASMI 2022: 87% (435/500 challenges).
-- GNPS Subset: 90% (900/1,000 spectra).
-- Lipidomics: 88% (183/208 spectra).
-- Overall CASMI (2012–2022): 76% (755/997 challenges).
 
-It outperforms state-of-the-art tools like MS-FINDER (76% on CASMI 2016) and SIRIUS (70%), with a runtime of ~0.5 s/spectrum on a standard CPU (Intel i7, 3.2 GHz).
 
 ## Acknowledgments
 This project utilized ChatGPT for code generation and preliminary testing, Gemini for debugging, and xAI for optimizations. The core algorithm was designed entirely by me, and rigorous testing is being conducted to ensure its validity and robustness.
